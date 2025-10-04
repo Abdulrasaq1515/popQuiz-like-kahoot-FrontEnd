@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PopQuiz - Kahoot-like Quiz Game</title>
+    <link rel="stylesheet" href="index.css">
+   </head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 PopQuiz</h1>
+            <p>Create amazing quizzes and play with friends!</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-buttons">
+            <button onclick="showScreen('home')">🏠 Home</button>
+            <button onclick="showScreen('register')">👤 Register</button>
+            <button onclick="showScreen('create')">➕ Create Quiz</button>
+            <button onclick="showScreen('join')">🚀 Join Quiz</button>
+            <button onclick="showScreen('active')">📋 Active Quizzes</button>
+        </div>
+        <!-- Update the Home screen grid -->
+        <div id="home" class="screen active">
+            <h2>Welcome to PopQuiz! 🎉</h2>
+            <p>Create your own quiz or join an existing one to start playing!</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 30px;">
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; text-align: center; cursor: pointer;" onclick="showScreen('register')">
+                    <h3>👤 Register</h3>
+                    <p>Create an account to host quizzes and track your progress</p>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; text-align: center; cursor: pointer;" onclick="showScreen('create')">
+                    <h3>📝 Create Quiz</h3>
+                    <p>Create your own quiz manually or from question banks</p>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #51cf66 0%, #40c057 100%); color: white; padding: 30px; border-radius: 15px; text-align: center; cursor: pointer;" onclick="showScreen('join')">
+                    <h3>🚀 Join Quiz</h3>
+                    <p>Enter a quiz code to join and play with others</p>
+                </div>
+            </div>
+        </div>
+        
+    <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+        <h3>🎯 How to Play</h3>
+        <ul style="text-align: left; margin: 15px 0;">
+            <li><strong>Register</strong> to create an account and host quizzes</li>
+            <li><strong>Create quizzes</strong> with custom questions</li>
+            <li><strong>Join quizzes</strong> with a 6-digit code</li>
+            <li><strong>Answer quickly</strong> to earn more points</li>
+            <li><strong>Compete</strong> with other players on the leaderboard</li>
+        </ul>
+    </div>
+</div>
+
+        <!-- Create Quiz Screen -->
+        <div id="create" class="screen">
+            <h2>Create New Quiz 📝</h2>
+            
+            <div class="form-group">
+                <label>Quiz Title:</label>
+                <input type="text" id="quizTitle" placeholder="Enter quiz title...">
+            </div>
+
+            <div class="form-group">
+                <label>Quiz Mode:</label>
+                <select id="quizMode" onchange="toggleQuizMode()">
+                    <option value="manual">Manual (Create questions manually)</option>
+                    <option value="auto">Automatic (From question bank)</option>
+                </select>
+            </div>
+
+            <div id="manualMode">
+                <div id="questionsContainer">
+                </div>
+                
+                <button class="btn" onclick="addQuestion()">➕ Add Question</button>
+                <button class="btn btn-success" onclick="createQuiz()" id="createQuizBtn">🎯 Create Quiz</button>
+            </div>
+            <div id="autoMode" style="display: none;">
+                <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 10px; margin: 20px 0;">
+                    <h3>🚧 Coming Soon!</h3>
+                    <p>Automatic quiz creation from question banks will be available in the next update.</p>
+                    <p>For now, please use the manual quiz creation mode.</p>
+                    <button class="btn" onclick="showScreen('create'); document.getElementById('quizMode').value='manual'; toggleQuizMode();">
+                        ➕ Switch to Manual Mode
+                    </button>
+                </div>
+    </div>
+    
+    <!-- Keep the existing form but it won't be used -->
+    <div class="form-group">
+        <label>Question Bank:</label>
+        <select id="questionBank" disabled>
+            <option value="">Question Banks - Coming Soon</option>
+        </select>
+    </div>
+</div>
+
+        <div id="join" class="screen">
+            <h2>Join Quiz 🚀</h2>
+            
+            <div class="form-group">
+                <label>Quiz Code:</label>
+                <input type="text" id="joinQuizCode" placeholder="Enter 6-digit quiz code..." maxlength="6">
+            </div>
+            
+            <div class="form-group">
+                <label>Your Nickname:</label>
+                <input type="text" id="playerNickname" placeholder="Enter your nickname...">
+            </div>
+            
+            <button class="btn btn-success" onclick="joinQuiz()">🚀 Join Quiz</button>
+        </div>
+
+        <!-- Register Screen -->
+        <div id="register" class="screen">
+            <h2>Create Account 👤</h2>
+    
+        <div class="form-group">
+            <label>Username:</label>
+            <input type="text" id="registerUsername" placeholder="Choose a username...">
+        </div>
+    
+    <div class="form-group">
+        <label>Email:</label>
+        <input type="email" id="registerEmail" placeholder="Enter your email...">
+    </div>
+    
+    <div class="form-group">
+        <label>Password:</label>
+        <input type="password" id="registerPassword" placeholder="Create a password...">
+    </div>
+    
+    <div class="form-group">
+        <label>Role:</label>
+        <select id="registerRole">
+            <option value="HOST">Quiz Host</option>
+            <option value="ADMIN">Administrator</option>
+        </select>
+        </div>
+    
+        <button class="btn btn-success" onclick="registerUser()">👤 Create Account</button>
+    
+    <div style="text-align: center; margin-top: 20px;">
+        <p>Already have an account? <a href="#" onclick="showScreen('home')">Go to Home</a></p>
+    </div>
+</div>
+
+        <div id="active" class="screen">
+            <h2>Active Quizzes 📋</h2>
+            <div id="activeQuizzesList">
+                <div class="loading">Loading active quizzes...</div>
+            </div>
+        </div>
+
+        <div id="lobby" class="screen">
+            <h2>Quiz Lobby 🏁</h2>
+            
+            <div class="quiz-code">
+                <h2 id="lobbyQuizCode">------</h2>
+                <p>Share this code with others to join!</p>
+            </div>
+            
+            <div class="players-list">
+                <h3>Players Joined:</h3>
+                <div id="playersContainer">
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-success" onclick="startQuiz()" id="startQuizBtn">🎯 Start Quiz</button>
+                <button class="btn btn-danger" onclick="showScreen('home')">❌ Leave</button>
+            </div>
+        </div>
+
+        <div id="game" class="screen">
+            <div class="timer" id="timer">15</div>
+            
+            <div class="question-container">
+                <div class="question-text" id="currentQuestion">
+                    Loading question...
+                </div>
+                
+                <div id="optionsContainer">
+                </div>
+            </div>
+            
+            <div class="score-display">
+                Score: <span id="currentScore">0</span>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="btn" onclick="nextQuestion()" id="nextBtn" style="display: none;">➡️ Next Question</button>
+                <button class="btn btn-success" onclick="finishQuiz()" id="finishBtn" style="display: none;">🏁 Finish Quiz</button>
+            </div>
+        </div>
+        <div id="results" class="screen">
+            <h2>Quiz Results 🏆</h2>
+            
+            <div class="leaderboard">
+                <h3>🏆 Leaderboard</h3>
+                <div id="leaderboardContainer">
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" onclick="showScreen('home')">🏠 Back to Home</button>
+                <button class="btn" onclick="playAgain()">🔄 Play Again</button>
+            </div>
+        </div>
+
+        <div id="messages"></div>
+    </div>
+<script src="index.js"></script>
+</body>
+</html>
